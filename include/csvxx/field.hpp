@@ -5,21 +5,23 @@
 #include <sstream>
 #include <type_traits>
 
+
 namespace csvxx {
+
     class field
     {
     public:
-        // default ctor
+        //default ctor
         field() = default;
 
-        // dtor
+        //dtor
         ~field() = default;
 
-        // copy ctors
+        //copy ctors
         field(const field&) = default;
         field(field&&)      = default;
 
-        // converting ctors
+        //converting ctors
         field(const std::string&);
         field(std::string&&);
         field(const char* const);
@@ -28,7 +30,7 @@ namespace csvxx {
         template<typename T, typename = std::enable_if_t<std::is_arithmetic<T>::value>>
         field(T);
 
-        // assignment operators
+        //assignment operators
         field& operator =(const field&) = default;
         field& operator =(field&&)      = default;
 
@@ -40,21 +42,21 @@ namespace csvxx {
         template<typename T, typename = std::enable_if_t<std::is_arithmetic<T>::value>>
         field& operator =(T);
 
-        // aux methods
+        //aux methods
         void clear();
 
-        // state getters
+        //state getters
         bool empty() const;
         bool escaped() const;
 
-        // typed getters
+        //typed getters
         const std::string& as_string() const;
         std::int64_t as_signed() const;
         std::uint64_t as_unsigned() const;
         double as_double() const;
         bool as_bool() const;
 
-        // conversions
+        //conversions
         explicit operator const std::string&() const;
         explicit operator std::string() const;
         explicit operator std::int64_t() const;
@@ -63,29 +65,29 @@ namespace csvxx {
         explicit operator bool() const;
 
     private:
-        std::string m_data;
-        bool        m_escaped = false;
+        std::string str_data_;
+        bool        escaped_ = false;
     };
 
 
     inline
     field::field(const std::string& value)
-        : m_data(value)
-        , m_escaped(/*TODO*/false)
+        : str_data_(value)
+        , escaped_(/*TODO*/false)
     {
     }
 
     inline
     field::field(std::string&& value)
-        : m_data(std::move(value))
-        , m_escaped(/*TODO*/false)
+        : str_data_(std::move(value))
+        , escaped_(/*TODO*/false)
     {
     }
 
     inline
     field::field(const char* const value)
-        : m_data(value)
-        , m_escaped(/*TODO*/false)
+        : str_data_(value)
+        , escaped_(/*TODO*/false)
     {
     }
 
@@ -94,37 +96,37 @@ namespace csvxx {
     {
         std::locale loc;
         auto&& f = std::use_facet<std::numpunct<std::string::value_type>>(loc);
-        m_data = (value) ? f.truename() : f.falsename();
+        this->str_data_ = (value) ? f.truename() : f.falsename();
     }
 
     template<typename T, typename>
     inline
     field::field(T value)
-        : m_data(std::to_string(value))
+        : str_data_(std::to_string(value))
     {
     }
 
     inline
     field& field::operator =(const std::string& value)
     {
-        m_data = value;
-        m_escaped = false; //TODO
+        this->str_data_ = value;
+        this->escaped_ = false; //TODO
         return *this;
     }
 
     inline
     field& field::operator =(std::string&& value)
     {
-        m_data = std::move(value);
-        m_escaped = false; //TODO
+        this->str_data_ = std::move(value);
+        this->escaped_ = false; //TODO
         return *this;
     }
 
     inline
     field& field::operator =(const char* const value)
     {
-        m_data = value;
-        m_escaped = false; //TODO
+        this->str_data_ = value;
+        this->escaped_ = false; //TODO
         return *this;
     }
 
@@ -133,8 +135,8 @@ namespace csvxx {
     {
         std::locale loc;
         auto&& f = std::use_facet<std::numpunct<std::string::value_type>>(loc);
-        m_data = (value) ? f.truename() : f.falsename();
-        m_escaped = false;
+        this->str_data_ = (value) ? f.truename() : f.falsename();
+        this->escaped_ = false;
         return *this;
     }
 
@@ -142,59 +144,59 @@ namespace csvxx {
     inline
     field& field::operator =(T value)
     {
-        m_data = std::to_string(value);
-        m_escaped = false;
+        this->str_data_ = std::to_string(value);
+        this->escaped_ = false;
         return *this;
     }
 
     inline
     void field::clear()
     {
-        m_data.clear();
-        m_escaped = false;
+        this->str_data_.clear();
+        this->escaped_ = false;
     }
 
     inline
     bool field::empty() const
     {
-        return m_data.empty();
+        return this->str_data_.empty();
     }
 
     inline
     bool field::escaped() const
     {
-        return m_escaped;
+        return this->escaped_;
     }
 
     inline
     const std::string& field::as_string() const
     {
-        return m_data;
+        return this->str_data_;
     }
 
     inline
     std::int64_t field::as_signed() const
     {
-        return std::stoll(m_data);
+        return std::stoll(this->str_data_);
     }
 
     inline
     std::uint64_t field::as_unsigned() const
     {
-        return std::stoull(m_data);
+        return std::stoull(this->str_data_);
     }
 
     inline
     double field::as_double() const
     {
-        return std::stod(m_data);
+        return std::stod(this->str_data_);
     }
 
     inline
     bool field::as_bool() const
     {
         bool res = false;
-        std::istringstream ss(m_data);
+        std::istringstream ss(this->str_data_);
         ss >> std::boolalpha >> res;
         return res;
     }
@@ -234,5 +236,6 @@ namespace csvxx {
     {
         return this->as_bool();
     }
+
 }
 

@@ -10,7 +10,7 @@ using namespace csvxx;
 
 
 //simple tests
-TEST(simple_field_test, DefaultCtorAndDtor)
+TEST(SimpleFieldTest, defaultCtorAndDtor)
 {
     ASSERT_NO_THROW({
         field f;
@@ -19,7 +19,7 @@ TEST(simple_field_test, DefaultCtorAndDtor)
     });
 }
 
-TEST(simple_field_test, EmptyAndClear)
+TEST(SimpleFieldTest, emptyAndClear)
 {
     ASSERT_NO_THROW({
         field f("test");
@@ -29,7 +29,7 @@ TEST(simple_field_test, EmptyAndClear)
     });
 }
 
-TEST(simple_field_test, CopyCtor)
+TEST(SimpleFieldTest, copyCtor)
 {
     ASSERT_NO_THROW({
         field f1("test");
@@ -48,7 +48,7 @@ TEST(simple_field_test, CopyCtor)
 
 
 //escaping tests
-TEST(escaped_field_test, EscapedFlag)
+TEST(EscapedFieldTest, escapedFlag)
 {
     field f1("test");
     EXPECT_FALSE(f1.escaped());
@@ -78,7 +78,7 @@ TEST(escaped_field_test, EscapedFlag)
 
 //integer tests
 template<typename T>
-class integer_field_test : public ::testing::Test
+class IntegerFieldTest : public ::testing::Test
 {
 protected:
     using ConversionResult = std::conditional_t<std::is_signed<T>::value,
@@ -93,9 +93,9 @@ protected:
     static const std::vector<T> TestValues;
 };
 
-TYPED_TEST_CASE_P(integer_field_test);
+TYPED_TEST_CASE_P(IntegerFieldTest);
 
-TYPED_TEST_P(integer_field_test, ConversionCtor)
+TYPED_TEST_P(IntegerFieldTest, conversionCtor)
 {
     for (auto tv : TestFixture::TestValues) {
         auto tv_rep = std::to_string(tv);
@@ -109,7 +109,7 @@ TYPED_TEST_P(integer_field_test, ConversionCtor)
     }
 }
 
-TYPED_TEST_P(integer_field_test, AssignmentOp)
+TYPED_TEST_P(IntegerFieldTest, assignmentOp)
 {
     for (auto tv : TestFixture::TestValues) {
         auto tv_rep = std::to_string(tv);
@@ -124,7 +124,7 @@ TYPED_TEST_P(integer_field_test, AssignmentOp)
     }
 }
 
-TYPED_TEST_P(integer_field_test, ConversionOp)
+TYPED_TEST_P(IntegerFieldTest, conversionOp)
 {
     for (auto tv : TestFixture::TestValues) {
         field f(tv);
@@ -133,20 +133,20 @@ TYPED_TEST_P(integer_field_test, ConversionOp)
     }
 }
 
-REGISTER_TYPED_TEST_CASE_P(integer_field_test, ConversionCtor, AssignmentOp, ConversionOp);
+REGISTER_TYPED_TEST_CASE_P(IntegerFieldTest, conversionCtor, assignmentOp, conversionOp);
 
-using integer_field_test_types = ::testing::Types<std::int8_t,
-                                                  std::uint8_t,
-                                                  std::int16_t,
-                                                  std::uint16_t,
-                                                  std::int32_t,
-                                                  std::uint32_t,
-                                                  std::int64_t,
-                                                  std::uint64_t>;
+using IntegerFieldTestTypes = ::testing::Types<std::int8_t,
+                                               std::uint8_t,
+                                               std::int16_t,
+                                               std::uint16_t,
+                                               std::int32_t,
+                                               std::uint32_t,
+                                               std::int64_t,
+                                               std::uint64_t>;
 
-INSTANTIATE_TYPED_TEST_CASE_P(Integer, integer_field_test, integer_field_test_types);
+INSTANTIATE_TYPED_TEST_CASE_P(Integer, IntegerFieldTest, IntegerFieldTestTypes);
 
-template<> const std::vector<std::int8_t> integer_field_test<std::int8_t>::TestValues = {
+template<> const std::vector<std::int8_t> IntegerFieldTest<std::int8_t>::TestValues = {
     std::numeric_limits<std::int8_t>::min(),
     std::numeric_limits<std::int8_t>::min() / 2,
     0,
@@ -154,7 +154,7 @@ template<> const std::vector<std::int8_t> integer_field_test<std::int8_t>::TestV
     std::numeric_limits<std::int8_t>::max()
 };
 
-template<> const std::vector<std::uint8_t> integer_field_test<std::uint8_t>::TestValues = {
+template<> const std::vector<std::uint8_t> IntegerFieldTest<std::uint8_t>::TestValues = {
     0,
     std::numeric_limits<std::uint8_t>::max() / 10,
     std::numeric_limits<std::uint8_t>::max() / 10 * 5,
@@ -162,7 +162,7 @@ template<> const std::vector<std::uint8_t> integer_field_test<std::uint8_t>::Tes
     std::numeric_limits<std::uint8_t>::max()
 };
 
-template<> const std::vector<std::int16_t> integer_field_test<std::int16_t>::TestValues = {
+template<> const std::vector<std::int16_t> IntegerFieldTest<std::int16_t>::TestValues = {
     std::numeric_limits<std::int16_t>::min(),
     std::numeric_limits<std::int16_t>::min() / 2,
     0,
@@ -170,7 +170,7 @@ template<> const std::vector<std::int16_t> integer_field_test<std::int16_t>::Tes
     std::numeric_limits<std::int16_t>::max()
 };
 
-template<> const std::vector<std::uint16_t> integer_field_test<std::uint16_t>::TestValues = {
+template<> const std::vector<std::uint16_t> IntegerFieldTest<std::uint16_t>::TestValues = {
     0,
     std::numeric_limits<std::uint16_t>::max() / 10,
     std::numeric_limits<std::uint16_t>::max() / 10 * 5,
@@ -178,7 +178,7 @@ template<> const std::vector<std::uint16_t> integer_field_test<std::uint16_t>::T
     std::numeric_limits<std::uint16_t>::max()
 };
 
-template<> const std::vector<std::int32_t> integer_field_test<std::int32_t>::TestValues = {
+template<> const std::vector<std::int32_t> IntegerFieldTest<std::int32_t>::TestValues = {
     std::numeric_limits<std::int32_t>::min(),
     std::numeric_limits<std::int32_t>::min() / 2,
     0,
@@ -186,7 +186,7 @@ template<> const std::vector<std::int32_t> integer_field_test<std::int32_t>::Tes
     std::numeric_limits<std::int32_t>::max()
 };
 
-template<> const std::vector<std::uint32_t> integer_field_test<std::uint32_t>::TestValues = {
+template<> const std::vector<std::uint32_t> IntegerFieldTest<std::uint32_t>::TestValues = {
     0,
     std::numeric_limits<std::uint32_t>::max() / 10,
     std::numeric_limits<std::uint32_t>::max() / 10 * 5,
@@ -194,7 +194,7 @@ template<> const std::vector<std::uint32_t> integer_field_test<std::uint32_t>::T
     std::numeric_limits<std::uint32_t>::max()
 };
 
-template<> const std::vector<std::int64_t> integer_field_test<std::int64_t>::TestValues = {
+template<> const std::vector<std::int64_t> IntegerFieldTest<std::int64_t>::TestValues = {
     std::numeric_limits<std::int64_t>::min(),
     std::numeric_limits<std::int64_t>::min() / 2,
     0,
@@ -202,7 +202,7 @@ template<> const std::vector<std::int64_t> integer_field_test<std::int64_t>::Tes
     std::numeric_limits<std::int64_t>::max()
 };
 
-template<> const std::vector<std::uint64_t> integer_field_test<std::uint64_t>::TestValues = {
+template<> const std::vector<std::uint64_t> IntegerFieldTest<std::uint64_t>::TestValues = {
     0,
     std::numeric_limits<std::uint64_t>::max() / 10,
     std::numeric_limits<std::uint64_t>::max() / 10 * 5,
@@ -213,15 +213,15 @@ template<> const std::vector<std::uint64_t> integer_field_test<std::uint64_t>::T
 
 //floating point tests
 template<typename T>
-class floating_field_test : public ::testing::Test
+class FloatingFieldTest : public ::testing::Test
 {
 protected:
     static const std::vector<T> TestValues;
 };
 
-TYPED_TEST_CASE_P(floating_field_test);
+TYPED_TEST_CASE_P(FloatingFieldTest);
 
-TYPED_TEST_P(floating_field_test, ConversionCtor)
+TYPED_TEST_P(FloatingFieldTest, conversionCtor)
 {
     for (auto tv : TestFixture::TestValues) {
         auto tv_rep = std::to_string(tv);
@@ -235,7 +235,7 @@ TYPED_TEST_P(floating_field_test, ConversionCtor)
     }
 }
 
-TYPED_TEST_P(floating_field_test, AssignmentOp)
+TYPED_TEST_P(FloatingFieldTest, assignmentOp)
 {
     for (auto tv : TestFixture::TestValues) {
         auto tv_rep = std::to_string(tv);
@@ -250,7 +250,7 @@ TYPED_TEST_P(floating_field_test, AssignmentOp)
     }
 }
 
-TYPED_TEST_P(floating_field_test, ConversionOp)
+TYPED_TEST_P(FloatingFieldTest, conversionOp)
 {
     for (auto tv : TestFixture::TestValues) {
         ASSERT_NO_THROW({
@@ -261,13 +261,13 @@ TYPED_TEST_P(floating_field_test, ConversionOp)
     }
 }
 
-REGISTER_TYPED_TEST_CASE_P(floating_field_test, ConversionCtor, AssignmentOp, ConversionOp);
+REGISTER_TYPED_TEST_CASE_P(FloatingFieldTest, conversionCtor, assignmentOp, conversionOp);
 
-using floating_field_test_types = ::testing::Types<float, double>;
+using FloatingFieldTestTypes = ::testing::Types<float, double>;
 
-INSTANTIATE_TYPED_TEST_CASE_P(Floating, floating_field_test, floating_field_test_types);
+INSTANTIATE_TYPED_TEST_CASE_P(Floating, FloatingFieldTest, FloatingFieldTestTypes);
 
-template<> const std::vector<float> floating_field_test<float>::TestValues = {
+template<> const std::vector<float> FloatingFieldTest<float>::TestValues = {
     -std::numeric_limits<float>::infinity(),
     std::numeric_limits<float>::lowest(),
 //    -1.0 - std::numeric_limits<float>::epsilon(),
@@ -281,7 +281,7 @@ template<> const std::vector<float> floating_field_test<float>::TestValues = {
     std::numeric_limits<float>::infinity()
 };
 
-template<> const std::vector<double> floating_field_test<double>::TestValues = {
+template<> const std::vector<double> FloatingFieldTest<double>::TestValues = {
     -std::numeric_limits<double>::infinity(),
     std::numeric_limits<double>::lowest(),
     -1.0 - std::numeric_limits<double>::epsilon(),
@@ -298,7 +298,7 @@ template<> const std::vector<double> floating_field_test<double>::TestValues = {
 
 
 //other tests
-TEST(boolean_field_test, AllOps)
+TEST(BooleanFieldTest, allOps)
 {
     const std::string TrueRep = "true";
     const std::string FalseRep = "false";
@@ -326,7 +326,7 @@ TEST(boolean_field_test, AllOps)
 
 const std::vector<std::string> StringTestValues = {"", "test", "  spaces ", " a few words"};
 
-TEST(string_field_test, StdStringOps)
+TEST(StringFieldTest, stdStringOps)
 {
     for (const auto& tv : StringTestValues) {
         ASSERT_NO_THROW({
@@ -344,7 +344,7 @@ TEST(string_field_test, StdStringOps)
     }
 }
 
-TEST(string_field_test, StdStringRValOps)
+TEST(StringFieldTest, stdStringRValOps)
 {
 
     for (const auto& tv : StringTestValues) {
@@ -363,7 +363,7 @@ TEST(string_field_test, StdStringRValOps)
     }
 }
 
-TEST(string_field_test, CStringOps)
+TEST(StringFieldTest, cstringOps)
 {
     for (const auto& tv : StringTestValues) {
         ASSERT_NO_THROW({

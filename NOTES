@@ -1,0 +1,17 @@
+record
+------
+
+template<typename This, typename... Args>
+struct is_this_or_derived : public std::false_type
+{};
+
+template<typename This, typename T>
+struct is_this_or_derived : public std::is_base_of_t<This, typename std::decay_t<T>>
+{};
+
+template<typename... Args, typename = typename std::enable_if_t<!is_this_or_derived_v<record, Args...>>>
+record(Args&&... args)
+{
+    using aux_type = int[];
+    aux_type{0, (this->base::emplace_back(std::forward<Args>(args)), 0};
+}

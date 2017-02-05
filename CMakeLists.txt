@@ -23,7 +23,8 @@ if(GTEST_FOUND)
     enable_testing()
 
     add_executable(GTestMain
-                   ${TEST_DIR}/field_test.cpp)
+                   ${TEST_DIR}/field_test.cpp
+                   ${TEST_DIR}/record_test.cpp)
 
     target_include_directories(GTestMain SYSTEM
                                PRIVATE ${GTEST_INCLUDE_DIR})
