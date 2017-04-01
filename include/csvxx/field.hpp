@@ -1,3 +1,5 @@
+#pragma once 
+
 #include <string>
 #include <stdexcept>
 #include <cstdint>
@@ -30,7 +32,7 @@ namespace csvxx {
         template<typename T, typename = std::enable_if_t<std::is_arithmetic<T>::value>>
         field(T);
 
-        //assignment operators
+        //assignment ops
         field& operator =(const field&) = default;
         field& operator =(field&&)      = default;
 

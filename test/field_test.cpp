@@ -3,7 +3,6 @@
 #include <gtest/gtest.h>
 
 #include <limits>
-#include <cstring>
 
 
 using namespace csvxx;
@@ -12,38 +11,17 @@ using namespace csvxx;
 //simple tests
 TEST(SimpleFieldTest, defaultCtorAndDtor)
 {
-    ASSERT_NO_THROW({
-        field f;
-        EXPECT_TRUE(f.empty());
-        EXPECT_FALSE(f.escaped());
-    });
+    field f;
+    EXPECT_TRUE(f.empty());
+    EXPECT_FALSE(f.escaped());
 }
 
 TEST(SimpleFieldTest, emptyAndClear)
 {
-    ASSERT_NO_THROW({
-        field f("test");
-        ASSERT_FALSE(f.empty());
-        f.clear();
-        ASSERT_TRUE(f.empty());
-    });
-}
-
-TEST(SimpleFieldTest, copyCtor)
-{
-    ASSERT_NO_THROW({
-        field f1("test");
-        field f2 = f1;
-        ASSERT_EQ(f1.empty(), f2.empty());
-        ASSERT_EQ(f1.escaped(), f2.escaped());
-        ASSERT_EQ(f1.as_string(), f2.as_string());
-
-        field f3;
-        field f4 = f3;
-        ASSERT_EQ(f3.empty(), f4.empty());
-        ASSERT_EQ(f3.escaped(), f4.escaped());
-        ASSERT_EQ(f3.as_string(), f4.as_string());
-    });
+    field f("test");
+    ASSERT_FALSE(f.empty());
+    f.clear();
+    ASSERT_TRUE(f.empty());
 }
 
 
@@ -100,12 +78,10 @@ TYPED_TEST_P(IntegerFieldTest, conversionCtor)
     for (auto tv : TestFixture::TestValues) {
         auto tv_rep = std::to_string(tv);
 
-        ASSERT_NO_THROW({
-            field f(tv);
-            ASSERT_FALSE(f.empty());
-            EXPECT_FALSE(f.escaped());
-            ASSERT_EQ(f.as_string(), tv_rep);
-        });
+        field f(tv);
+        ASSERT_FALSE(f.empty());
+        EXPECT_FALSE(f.escaped());
+        ASSERT_EQ(f.as_string(), tv_rep);
     }
 }
 
@@ -114,13 +90,11 @@ TYPED_TEST_P(IntegerFieldTest, assignmentOp)
     for (auto tv : TestFixture::TestValues) {
         auto tv_rep = std::to_string(tv);
 
-        ASSERT_NO_THROW({
-            field f;
-            f = tv;
-            ASSERT_FALSE(f.empty());
-            EXPECT_FALSE(f.escaped());
-            ASSERT_EQ(f.as_string(), tv_rep);
-        });
+        field f;
+        f = tv;
+        ASSERT_FALSE(f.empty());
+        EXPECT_FALSE(f.escaped());
+        ASSERT_EQ(f.as_string(), tv_rep);
     }
 }
 
@@ -226,12 +200,10 @@ TYPED_TEST_P(FloatingFieldTest, conversionCtor)
     for (auto tv : TestFixture::TestValues) {
         auto tv_rep = std::to_string(tv);
 
-        ASSERT_NO_THROW({
-            field f(tv);
-            ASSERT_FALSE(f.empty());
-            EXPECT_FALSE(f.escaped());
-            ASSERT_EQ(f.as_string(), tv_rep);
-        });
+        field f(tv);
+        ASSERT_FALSE(f.empty());
+        EXPECT_FALSE(f.escaped());
+        ASSERT_EQ(f.as_string(), tv_rep);
     }
 }
 
@@ -240,24 +212,20 @@ TYPED_TEST_P(FloatingFieldTest, assignmentOp)
     for (auto tv : TestFixture::TestValues) {
         auto tv_rep = std::to_string(tv);
 
-        ASSERT_NO_THROW({
-            field f;
-            f = tv;
-            ASSERT_FALSE(f.empty());
-            EXPECT_FALSE(f.escaped());
-            ASSERT_EQ(f.as_string(), tv_rep);
-        });
+        field f;
+        f = tv;
+        ASSERT_FALSE(f.empty());
+        EXPECT_FALSE(f.escaped());
+        ASSERT_EQ(f.as_string(), tv_rep);
     }
 }
 
 TYPED_TEST_P(FloatingFieldTest, conversionOp)
 {
     for (auto tv : TestFixture::TestValues) {
-        ASSERT_NO_THROW({
-            field f(tv);
-            ASSERT_FALSE(f.empty());
-            ASSERT_DOUBLE_EQ(static_cast<double>(f), tv);
-        });
+        field f(tv);
+        ASSERT_FALSE(f.empty());
+        ASSERT_DOUBLE_EQ(static_cast<double>(f), tv);
     }
 }
 
@@ -305,22 +273,21 @@ TEST(BooleanFieldTest, allOps)
 
     for (auto tv : {true, false}) {
         const std::string& tv_rep = tv ? TrueRep : FalseRep;
-        ASSERT_NO_THROW({
-            field f1(tv);
-            ASSERT_FALSE(f1.empty());
-            EXPECT_FALSE(f1.escaped());
-            ASSERT_EQ(f1.as_string(), tv_rep);
 
-            field f2;
-            f2 = tv;
-            ASSERT_FALSE(f2.empty());
-            EXPECT_FALSE(f2.escaped());
-            ASSERT_EQ(f2.as_string(), tv_rep);
+        field f1(tv);
+        ASSERT_FALSE(f1.empty());
+        EXPECT_FALSE(f1.escaped());
+        ASSERT_EQ(f1.as_string(), tv_rep);
 
-            field f3(tv);
-            ASSERT_FALSE(f3.empty());
-            ASSERT_EQ(static_cast<bool>(f3), tv);
-        });
+        field f2;
+        f2 = tv;
+        ASSERT_FALSE(f2.empty());
+        EXPECT_FALSE(f2.escaped());
+        ASSERT_EQ(f2.as_string(), tv_rep);
+
+        field f3(tv);
+        ASSERT_FALSE(f3.empty());
+        ASSERT_EQ(static_cast<bool>(f3), tv);
     }
 }
 
@@ -329,18 +296,16 @@ const std::vector<std::string> StringTestValues = {"", "test", "  spaces ", " a 
 TEST(StringFieldTest, stdStringOps)
 {
     for (const auto& tv : StringTestValues) {
-        ASSERT_NO_THROW({
-            field f1(tv);
-            ASSERT_EQ(f1.empty(), tv.empty());
-            ASSERT_EQ(f1.as_string(), tv);
-            ASSERT_EQ(static_cast<std::string>(f1), tv);
+        field f1(tv);
+        ASSERT_EQ(f1.empty(), tv.empty());
+        ASSERT_EQ(f1.as_string(), tv);
+        ASSERT_EQ(static_cast<std::string>(f1), tv);
 
-            field f2;
-            f2 = tv;
-            ASSERT_EQ(f2.empty(), tv.empty());
-            ASSERT_EQ(f2.as_string(), tv);
-            ASSERT_EQ(static_cast<std::string>(f2), tv);
-        });
+        field f2;
+        f2 = tv;
+        ASSERT_EQ(f2.empty(), tv.empty());
+        ASSERT_EQ(f2.as_string(), tv);
+        ASSERT_EQ(static_cast<std::string>(f2), tv);
     }
 }
 
@@ -348,36 +313,32 @@ TEST(StringFieldTest, stdStringRValOps)
 {
 
     for (const auto& tv : StringTestValues) {
-        ASSERT_NO_THROW({
-            field f1(tv.substr());
-            ASSERT_EQ(f1.empty(), tv.empty());
-            ASSERT_EQ(f1.as_string(), tv);
-            ASSERT_EQ(static_cast<std::string>(f1), tv);
+        field f1(tv.substr());
+        ASSERT_EQ(f1.empty(), tv.empty());
+        ASSERT_EQ(f1.as_string(), tv);
+        ASSERT_EQ(static_cast<std::string>(f1), tv);
 
-            field f2;
-            f2 = tv.substr();
-            ASSERT_EQ(f2.empty(), tv.empty());
-            ASSERT_EQ(f2.as_string(), tv);
-            ASSERT_EQ(static_cast<std::string>(f2), tv);
-        });
+        field f2;
+        f2 = tv.substr();
+        ASSERT_EQ(f2.empty(), tv.empty());
+        ASSERT_EQ(f2.as_string(), tv);
+        ASSERT_EQ(static_cast<std::string>(f2), tv);
     }
 }
 
 TEST(StringFieldTest, cstringOps)
 {
     for (const auto& tv : StringTestValues) {
-        ASSERT_NO_THROW({
-            field f1(tv.c_str());
-            ASSERT_EQ(f1.empty(), tv.empty());
-            ASSERT_EQ(f1.as_string(), tv);
-            ASSERT_EQ(static_cast<std::string>(f1), tv);
+        field f1(tv.c_str());
+        ASSERT_EQ(f1.empty(), tv.empty());
+        ASSERT_EQ(f1.as_string(), tv);
+        ASSERT_EQ(static_cast<std::string>(f1), tv);
 
-            field f2;
-            f2 = tv.c_str();
-            ASSERT_EQ(f2.empty(), tv.empty());
-            ASSERT_EQ(f2.as_string(), tv);
-            ASSERT_EQ(static_cast<std::string>(f2), tv);
-        });
+        field f2;
+        f2 = tv.c_str();
+        ASSERT_EQ(f2.empty(), tv.empty());
+        ASSERT_EQ(f2.as_string(), tv);
+        ASSERT_EQ(static_cast<std::string>(f2), tv);
     }
 }
 

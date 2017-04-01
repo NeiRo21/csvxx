@@ -24,7 +24,8 @@ if(GTEST_FOUND)
 
     add_executable(GTestMain
                    ${TEST_DIR}/field_test.cpp
-                   ${TEST_DIR}/record_test.cpp)
+                   ${TEST_DIR}/record_test.cpp
+                   ${TEST_DIR}/file_test.cpp)
 
     target_include_directories(GTestMain SYSTEM
                                PRIVATE ${GTEST_INCLUDE_DIR})

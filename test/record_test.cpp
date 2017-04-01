@@ -2,8 +2,6 @@
 
 #include <gtest/gtest.h>
 
-#include <cstring>
-
 
 using namespace csvxx;
 
@@ -11,28 +9,9 @@ using namespace csvxx;
 //simple tests
 TEST(SimpleRecordTest, defaultCtorAndDtor)
 {
-    ASSERT_NO_THROW({
-        record r;
-        ASSERT_TRUE(r.empty());
-        ASSERT_EQ(r.size(), 0);
-    });
-}
-
-TEST(SimpleRecordTest, copyCtor)
-{
-    ASSERT_NO_THROW({
-        record r1;
-        record r2 = r1;
-        ASSERT_EQ(r1.empty(), r2.empty());
-        ASSERT_EQ(r1.size(), r2.size());
-
-        record r3;
-        r3 << "test";
-        record r4 = r3;
-        ASSERT_EQ(r3.empty(), r4.empty());
-        ASSERT_EQ(r3.size(), r4.size());
-        ASSERT_EQ(r3[0].as_string(), r4[0].as_string());
-    });
+    record r;
+    ASSERT_TRUE(r.empty());
+    ASSERT_EQ(r.size(), 0);
 }
 
 
@@ -74,10 +53,8 @@ TEST(OperatorRecordTest, indexOp)
     r1[1] = 3;
     ASSERT_EQ(r1[1].as_signed(), 3);
 
-    ASSERT_NO_THROW({
-        r1[3] = 10u;
-        ASSERT_EQ(r1[3].as_unsigned(), 10);
-    });
+    r1[3] = 10u;
+    ASSERT_EQ(r1[3].as_unsigned(), 10);
 
     const record& r2 = r1;
     ASSERT_THROW(r2[10].as_string(), std::out_of_range);

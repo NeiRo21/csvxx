@@ -1,7 +1,8 @@
+#pragma once
+
 #include "csvxx/field.hpp"
 
 #include <vector>
-#include <type_traits>
 
 
 namespace csvxx {
@@ -28,7 +29,7 @@ namespace csvxx {
         record(const record&) = default;
         record(record&&)      = default;
 
-        //assignment operators
+        //assignment ops
         record& operator =(const record&) = default;
         record& operator =(record&&)      = default;
 
@@ -51,7 +52,7 @@ namespace csvxx {
         using base::resize;
         using base::swap;
 
-        //operators
+        //ops
         field& operator [](size_t index);
         const field& operator [](size_t index) const;
         
@@ -64,6 +65,7 @@ namespace csvxx {
     };
 
 
+    inline
     field& record::operator [](size_t index)
     {
         if (index >= this->size()) {
@@ -72,18 +74,21 @@ namespace csvxx {
         return this->base::operator [](index);
     }
 
+    inline
     const field& record::operator [](size_t index) const
     {
         return this->base::at(index);
     }
 
     template<typename T>
+    inline
     record& record::operator <<(T&& t)
     {
         this->base::emplace_back(std::forward<T>(t));
         return *this;
     }
 
+    inline
     record& record::operator +=(const record& rhs)
     {
         this->base::reserve(this->size() + rhs.size());
@@ -91,6 +96,7 @@ namespace csvxx {
         return *this;
     }
 
+    inline
     record operator +(record lhs, const record& rhs)
     {
         lhs += rhs;
